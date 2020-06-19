@@ -2,7 +2,16 @@ package main
 
 import (
 	"fmt"
+	"errors"
+	"math"
 )
+
+//creating a struct, which is a collection of fields group to create a more logical type
+
+type person struct {
+	name string
+	age int
+}
 
 func main() {
 	arith()
@@ -10,8 +19,32 @@ func main() {
 	slices()
 	maps()
 	loops()
+	//square root - 'happy case'
+	resultHappy, err := sqrt(16)
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(resultHappy)
+	}
+
+	//square root - 'unhappy case'
+	resultUnhappy, err := sqrt(-16)
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(resultUnhappy)
+	}
+
+	createPerson("Sam", 26)
+	pointers()
 }
 
+// function format:
+// func name(arg type, arg type) return-type
+
+// functions can have multiple return values in GO
 func arith() {
 	x := 5 //shorthand implemntation
 	var y int = 7
@@ -57,4 +90,49 @@ func loops() {
 		fmt.Println(j)
 		j++
 	}
+
+	//array loop
+	arr := []string{"a", "b", "c"}
+
+	for index, value := range arr {
+		fmt.Println("index:", index, "value:", value)
+	}
+
+	//map loop
+	m := make(map[string]string)
+	m["a"] = "alpha"
+	m["b"] = "beta"
+
+	for key, value := range arr {
+		fmt.Println("key:", key, "value:", value)
+	}	
+}
+
+func sqrt(x float64) (float64, error){
+	if x < 0 {
+		//errors need to be returned in this manner, as GO does not have any exceptions
+		return 0, errors.New("Undefined for negative numbers")
+	}
+
+	return math.Sqrt(x), nil
+}	
+
+func createPerson (name string, age int) {
+	p := person{name: name, age: age}
+	fmt.Println(p)
+	//print specific field
+	fmt.Println(p.age)
+}
+
+func pointers(){
+	i := 7
+	fmt.Println(i)
+	//the ampersand gives us the memory location
+	inc(&i)
+	fmt.Println(i)
+
+}
+
+func inc (x *int) {
+	*x++
 }
